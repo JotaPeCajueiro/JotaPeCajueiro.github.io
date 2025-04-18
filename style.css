@@ -1,0 +1,142 @@
+/* Estilos Gerais */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #fdf6f8; /* Um fundo rosa bem clarinho */
+    color: #333;
+}
+
+main {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #e91e63; /* Rosa vibrante */
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #c2185b; /* Rosa um pouco mais escuro */
+    border-bottom: 2px solid #fce4ec; /* Linha rosa clara abaixo do H2 */
+    padding-bottom: 5px;
+    margin-top: 0; /* Remove margem superior do H2 dentro da seção */
+    margin-bottom: 15px;
+}
+
+/* Placeholder do Vídeo */
+.video-placeholder {
+    background-color: #f3e5f5; /* Lilás claro */
+    border: 2px dashed #ce93d8; /* Borda lilás tracejada */
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    color: #6a1b9a; /* Roxo */
+    font-style: italic;
+}
+
+/* Estilos do Menu */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0; /* Margem abaixo do menu */
+    display: flex;
+    flex-wrap: wrap; /* Permite que botões quebrem linha em telas menores */
+    justify-content: center;
+    gap: 10px; /* Espaço entre os botões */
+}
+
+nav button {
+    padding: 12px 25px;
+    background-color: #ec407a; /* Rosa médio */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Botões arredondados */
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+nav button:hover {
+    background-color: #d81b60; /* Rosa mais escuro no hover */
+    transform: translateY(-2px); /* Leve efeito de levantar */
+}
+
+nav button:active {
+    transform: translateY(0); /* Volta ao normal ao clicar */
+}
+
+/* Área de Conteúdo */
+#content-area {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff9fa; /* Fundo sutilmente diferente */
+    border-radius: 5px;
+    border: 1px solid #fce4ec; /* Borda rosa bem clara */
+}
+
+.content-section {
+    display: none; /* Esconde todas as seções inicialmente */
+    padding: 20px;
+    border-radius: 5px;
+    animation: fadeIn 0.5s ease; /* Animação suave ao aparecer */
+}
+
+/* Classe 'active' será adicionada via JS para mostrar a seção */
+.content-section.active {
+    display: block;
+}
+
+/* Estilos para a lista ordenada */
+#amo ol {
+    padding-left: 20px;
+}
+
+#amo li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* Animação Fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsividade básica (Exemplo) */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Botões em coluna em telas pequenas */
+        align-items: center;
+    }
+
+    nav li {
+      width: 80%; /* Faz os itens ocuparem mais largura */
+      text-align: center;
+    }
+     nav button {
+      width: 100%; /* Faz os botões ocuparem toda a largura do li */
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+}
+        
