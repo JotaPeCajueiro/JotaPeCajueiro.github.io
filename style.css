@@ -31,16 +31,24 @@ h2 {
     margin-bottom: 15px;
 }
 
-/* Placeholder do Vídeo */
-.video-placeholder {
-    background-color: #f3e5f5; /* Lilás claro */
-    border: 2px dashed #ce93d8; /* Borda lilás tracejada */
-    padding: 40px 20px;
-    text-align: center;
-    margin-bottom: 30px;
-    border-radius: 5px;
-    color: #6a1b9a; /* Roxo */
-    font-style: italic;
+/* Estilos para o Container do Vídeo Responsivo */
+.video-container {
+    position: relative;      /* Necessário para posicionar o iframe dentro */
+    overflow: hidden;        /* Garante que nada saia dos limites */
+    width: 100%;             /* Ocupa toda a largura disponível */
+    padding-top: 56.25%;     /* Proporção 16:9 (altura/largura = 9/16 = 0.5625) */
+    margin-bottom: 30px;     /* Mantém o espaçamento abaixo do vídeo */
+    background-color: #e0e0e0; /* Cor de fundo enquanto o vídeo carrega */
+    border-radius: 5px;      /* Mantém os cantos arredondados */
+}
+
+.video-container iframe {
+    position: absolute;      /* Posiciona o iframe dentro do container */
+    top: 0;
+    left: 0;
+    width: 100%;             /* Faz o iframe ocupar todo o espaço do container */
+    height: 100%;            /* Faz o iframe ocupar todo o espaço do container */
+    border: none;            /* Remove qualquer borda padrão do iframe */
 }
 
 /* Estilos do Menu */
