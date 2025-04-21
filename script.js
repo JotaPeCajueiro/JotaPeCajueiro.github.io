@@ -59,5 +59,47 @@ document.addEventListener('DOMContentLoaded', function() {
     // } else {
          contentArea.style.display = 'none'; // Esconde se não houver botões
     // }
+ // --- NOVO CÓDIGO PARA O MODO NOTURNO ---
+ const themeToggleButton = document.getElementById('theme-toggle-button');
+ const body = document.body;
+ const storageKey = 'camilaSiteTheme'; // Chave única para este site
 
+ // Função para aplicar o tema e atualizar o botão
+ function applyTheme(theme) {
+     if (theme === 'dark') {
+         body.classList.add('dark-mode');
+         themeToggleButton.textContent = '☀️'; // Ícone de Sol
+         themeToggleButton.setAttribute('aria-label', 'Ativar modo claro');
+     } else {
+         body.classList.remove('dark-mode');
+         themeToggleButton.textContent = '🌙'; // Ícone de Lua
+         themeToggleButton.setAttribute('aria-label', 'Ativar modo escuro');
+     }
+ }
+
+ // Verifica se há um tema salvo no localStorage ao carregar a página
+ const savedTheme = localStorage.getItem(storageKey);
+
+ if (savedTheme) {
+     // Aplica o tema salvo
+     applyTheme(savedTheme);
+ } else {
+      // Opcional: Poderia verificar a preferência do sistema operacional aqui
+      // Por simplicidade, vamos definir o modo claro como padrão se nada for salvo
+      applyTheme('light');
+ }
+
+
+ // Adiciona o evento de clique ao botão de tema
+ themeToggleButton.addEventListener('click', () => {
+     // Verifica qual será o NOVO tema (o oposto do atual)
+     let newTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+
+     // Aplica o novo tema visualmente e atualiza o botão
+     applyTheme(newTheme);
+
+     // Salva a nova preferência no localStorage
+     localStorage.setItem(storageKey, newTheme);
+ });
+ // --- FIM DO CÓDIGO PARA MODO NOTURNO ---
 });

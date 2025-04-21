@@ -106,15 +106,37 @@
   /* --- Atualize outras regras para usar variáveis --- */
   
   .video-container {
+    position: relative;      /* Necessário para posicionar o iframe dentro */
+    overflow: hidden;        /* Garante que nada saia dos limites */
+    width: 100%;             /* Ocupa toda a largura disponível */
+    padding-top: 56.25%;     /* Proporção 16:9 (altura/largura = 9/16 = 0.5625) */
+    margin-bottom: 30px;     /* Mantém o espaçamento abaixo do vídeo */
+    background-color: #e0e0e0; /* Cor de fundo enquanto o vídeo carrega */
+    border-radius: 5px;      /* Mantém os cantos arredondados */
     /* ... (regras existentes) ... */
     background-color: var(--video-bg-color); /* USA VARIÁVEL */
   }
   
-  nav ul {
-    /* ... (regras existentes) ... */
-  }
+  /* Estilos do Menu */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0; /* Margem abaixo do menu */
+  display: flex;
+  flex-wrap: wrap; /* Permite que botões quebrem linha em telas menores */
+  justify-content: center;
+  gap: 10px; /* Espaço entre os botões */
+}
   
   nav button {
+    padding: 12px 25px;
+    background-color: #ec407a; /* Rosa médio */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Botões arredondados */
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     /* ... (regras existentes) ... */
     background-color: var(--accent-color); /* USA VARIÁVEL */
     color: var(--button-text-color); /* USA VARIÁVEL */
@@ -122,6 +144,7 @@
   
   nav button:hover {
     background-color: var(--accent-hover-color); /* USA VARIÁVEL */
+    transform: translateY(-2px); /* Leve efeito de levantar */
     /* ... (outras regras de hover) ... */
   }
   
@@ -135,13 +158,18 @@
   }
   
   .content-section {
+    display: none; /* Esconde todas as seções inicialmente */
+    padding: 20px;
+    border-radius: 5px;
+    animation: fadeIn 0.5s ease; /* Animação suave ao aparecer */
      /* ... (regras existentes) ... */
      /* Se tiver cor de fundo específica, use variável e adicione transition */
   }
   
-  .content-section.active {
-     /* ... (regras existentes) ... */
-  }
+ /* Classe 'active' será adicionada via JS para mostrar a seção */
+.content-section.active {
+  display: block;
+}
   
   #amo ol {
     padding-left: 20px;
@@ -163,50 +191,7 @@
   /* ... (resto do seu CSS, animações, media queries etc.) ... */
 
 
-
-/* Estilos Gerais */
-body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #fdf6f8; /* Um fundo rosa bem clarinho */
-    color: #333;
-}
-
-main {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: #e91e63; /* Rosa vibrante */
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-h2 {
-    color: #c2185b; /* Rosa um pouco mais escuro */
-    border-bottom: 2px solid #fce4ec; /* Linha rosa clara abaixo do H2 */
-    padding-bottom: 5px;
-    margin-top: 0; /* Remove margem superior do H2 dentro da seção */
-    margin-bottom: 15px;
-}
-
 /* Estilos para o Container do Vídeo Responsivo */
-.video-container {
-    position: relative;      /* Necessário para posicionar o iframe dentro */
-    overflow: hidden;        /* Garante que nada saia dos limites */
-    width: 100%;             /* Ocupa toda a largura disponível */
-    padding-top: 56.25%;     /* Proporção 16:9 (altura/largura = 9/16 = 0.5625) */
-    margin-bottom: 30px;     /* Mantém o espaçamento abaixo do vídeo */
-    background-color: #e0e0e0; /* Cor de fundo enquanto o vídeo carrega */
-    border-radius: 5px;      /* Mantém os cantos arredondados */
-}
 
 .video-container iframe {
     position: absolute;      /* Posiciona o iframe dentro do container */
@@ -217,75 +202,8 @@ h2 {
     border: none;            /* Remove qualquer borda padrão do iframe */
 }
 
-/* Estilos do Menu */
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 30px 0; /* Margem abaixo do menu */
-    display: flex;
-    flex-wrap: wrap; /* Permite que botões quebrem linha em telas menores */
-    justify-content: center;
-    gap: 10px; /* Espaço entre os botões */
-}
-
-nav button {
-    padding: 12px 25px;
-    background-color: #ec407a; /* Rosa médio */
-    color: white;
-    border: none;
-    border-radius: 20px; /* Botões arredondados */
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-nav button:hover {
-    background-color: #d81b60; /* Rosa mais escuro no hover */
-    transform: translateY(-2px); /* Leve efeito de levantar */
-}
-
 nav button:active {
     transform: translateY(0); /* Volta ao normal ao clicar */
-}
-
-/* Área de Conteúdo */
-#content-area {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #fff9fa; /* Fundo sutilmente diferente */
-    border-radius: 5px;
-    border: 1px solid #fce4ec; /* Borda rosa bem clara */
-}
-
-.content-section {
-    display: none; /* Esconde todas as seções inicialmente */
-    padding: 20px;
-    border-radius: 5px;
-    animation: fadeIn 0.5s ease; /* Animação suave ao aparecer */
-}
-
-/* Classe 'active' será adicionada via JS para mostrar a seção */
-.content-section.active {
-    display: block;
-}
-
-/* Estilos para a lista ordenada */
-#amo ol {
-    padding-left: 20px;
-}
-
-#amo li {
-    margin-bottom: 8px;
-    color: #555;
-}
-
-/* Rodapé */
-footer {
-    text-align: center;
-    margin-top: 30px;
-    padding: 15px;
-    color: #aaa;
-    font-size: 0.9em;
 }
 
 /* Animação Fade-in */
