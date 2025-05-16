@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
      applyTheme(savedTheme);
  } else {
       // Opcional: Poderia verificar a preferência do sistema operacional aqui
-      // Por simplicidade, vamos definir o modo claro como padrão se nada for salvo
-      applyTheme('light');
+      // Por simplicidade, vamos definir o modo escuro como padrão se nada for salvo
+      applyTheme('dark');
  }
 
 
