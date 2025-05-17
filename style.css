@@ -230,5 +230,63 @@ nav button:active {
     h1 {
         font-size: 1.8em;
     }
+    .photo-gallery img {
+                max-width: 100%; /* Em telas pequenas, permite que a foto ocupe mais espaço */
+                aspect-ratio: auto; /* Permite proporção original em telas menores se desejado */
+            }
+             .photo-gallery {
+                gap: 10px;
+     /* --- NOVA SEÇÃO: Galeria de Fotos --- */
+        #photo-gallery-container {
+            margin-top: 30px; /* Espaçamento acima da galeria */
+            padding: 20px;
+            background-color: var(--content-area-bg); /* Pode usar a mesma cor de fundo da área de conteúdo */
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        #photo-gallery-container h2 {
+            text-align: center;
+            color: var(--subheading-color); /* Reutiliza a cor do subtítulo */
+            margin-bottom: 20px;
+            border-bottom: none; /* Remove a borda padrão do h2 se não quiser aqui */
+        }
+
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap; /* Permite que as imagens quebrem linha */
+            gap: 15px; /* Espaço entre as imagens */
+            justify-content: center; /* Centraliza as imagens se não preencherem a linha toda */
+        }
+
+        .photo-gallery img {
+            width: 100%; /* Faz a imagem ocupar o contêiner do item da galeria */
+            max-width: 220px; /* Tamanho máximo para cada foto, ajuste conforme necessário */
+            height: auto; /* Mantém a proporção da imagem */
+            border-radius: 6px; /* Cantos arredondados para as fotos */
+            border: 3px solid var(--gallery-border-color); /* Borda sutil */
+            box-shadow: 0 2px 5px var(--box-shadow-color); /* Sombra leve */
+            object-fit: cover; /* Garante que a imagem cubra a área sem distorcer, pode cortar um pouco */
+            aspect-ratio: 1 / 1; /* Força um aspecto quadrado, ajuste ou remova se preferir proporções originais */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.05); /* Efeito de zoom leve no hover */
+            box-shadow: 0 4px 10px var(--box-shadow-color); /* Sombra mais pronunciada no hover */
+        }
+
+        .instructions {
+            font-size: 0.9em;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            border: 1px dashed var(--border-color);
+            text-align: left;
+        }
+        /* --- FIM DA NOVA SEÇÃO --- */            
 }
         
