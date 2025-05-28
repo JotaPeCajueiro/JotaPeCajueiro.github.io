@@ -102,4 +102,109 @@ document.addEventListener('DOMContentLoaded', function() {
      localStorage.setItem(storageKey, newTheme);
  });
  // --- FIM DO CÓDIGO PARA MODO NOTURNO ---
+   // --- LÓGICA DO QUIZ ---
+   const quizForm = document.getElementById('camilaQuiz');
+   const quizResultArea = document.getElementById('quizResult');
+   const scoreMessage = document.getElementById('scoreMessage');
+   const detailedFeedback = document.getElementById('detailedFeedback');
+
+   // !! IMPORTANTE: Personalize as respostas corretas aqui !!
+   const correctAnswers = {
+       q1: 'a',
+       q2: 'c',
+       q3: 'b',
+       q4: 'b'
+   };
+
+   // !! IMPORTANTE: Personalize as mensagens de feedback aqui !!
+   const feedbackMessages = [
+       { score: 0, message: "Hmm, parece que precisamos conversar mais sobre nossos momentos! 😉 Mas o importante é o amor!", feedback: "Não desanime, o amor está no ar!" },
+       { score: 1, message: "Você acertou uma! Já é um começo brilhante como nosso amor! ✨", feedback: "Continue tentando, cada acerto é uma estrela a mais no nosso céu!" },
+       { score: 2, message: "Duas certas! Estamos em sintonia, mas ainda há mistérios a desvendar! ❤️", feedback: "Estamos quase lá, nosso laço é forte!" },
+       { score: 3, message: "Uau, três acertos! 😍 Isso merece um beijo!", feedback: "Você é incrível, conhece os detalhes do nosso amor!" },
+       { score: 4, message: "🎉Você acertou todas! Te amo demais!", feedback: "Nossa sintonia é mágica, alma gêmea detectada!" }
+   ];
+
+   if (quizForm) {
+       quizForm.addEventListener('submit', function(event) {
+           event.preventDefault();
+
+           let score = 0;
+           const formData = new FormData(quizForm);
+           let allAnswered = true;
+           let questionCount = 0;
+
+           // PRIMEIRO: Limpar classes de feedback anteriores de TODAS as labels
+           document.querySelectorAll('.quiz-question label').forEach(label => {
+               label.classList.remove('correct-answer', 'wrong-answer');
+           });
+
+           for (const questionName in correctAnswers) { // ex: q1, q2, q3, q4
+               questionCount++;
+               const userAnswer = formData.get(questionName); // Pega o valor do radio selecionado para esta pergunta
+               const correctAnswerValue = correctAnswers[questionName];
+
+               if (!userAnswer) { // Se o usuário não respondeu (apesar do 'required')
+                   allAnswered = false;
+                   continue; // Pula para a próxima pergunta sem dar feedback visual para esta
+               }
+
+               // Encontra o input de rádio específico que o usuário selecionou para esta pergunta
+               const selectedInputElement = quizForm.querySelector(`input[name="${questionName}"][value="${userAnswer}"]`);
+
+               if (selectedInputElement) {
+                   const selectedLabelElement = selectedInputElement.closest('label'); // Pega a label pai do input selecionado
+                   if (selectedLabelElement) {
+                       if (userAnswer === correctAnswerValue) {
+                           selectedLabelElement.classList.add('correct-answer'); // Marca a selecionada como correta
+                           score++;
+                       } else {
+                           selectedLabelElement.classList.add('wrong-answer'); // Marca a selecionada como errada
+                           // NÃO marca mais a correta automaticamente
+                       }
+                   }
+               }
+           }
+
+           if (!allAnswered && questionCount > 0) {
+               alert("Por favor, responda a todas as perguntas antes de ver o resultado!");
+               quizResultArea.style.display = 'none'; // Esconde o resultado se não respondeu tudo
+               return;
+           }
+
+           // Exibe a mensagem de resultado com base na pontuação
+           let resultText = `Você acertou ${score} de ${questionCount} perguntas!`;
+           let feedbackText = "";
+
+           if (questionCount === 0) {
+               resultText = "O quiz ainda não tem perguntas!";
+               feedbackText = "Adicione algumas perguntas e respostas no código. 😉";
+           } else {
+               const finalFeedback = feedbackMessages.find(fb => fb.score === score);
+               if (finalFeedback) {
+                   resultText = finalFeedback.message;
+                   feedbackText = finalFeedback.feedback;
+               } else {
+                   // Fallback se não houver mensagem exata para a pontuação
+                   if (score === questionCount) { // Se acertou tudo
+                       const bestFeedback = feedbackMessages[feedbackMessages.length -1] || {message: resultText, feedback: "Parabéns!"};
+                       resultText = bestFeedback.message;
+                       feedbackText = bestFeedback.feedback;
+                   } else if (score === 0 && feedbackMessages.length > 0) { // Se errou tudo e tem mensagem para score 0
+                       const zeroFeedback = feedbackMessages[0];
+                       resultText = zeroFeedback.message;
+                       feedbackText = zeroFeedback.feedback;
+                   }
+                   // Se não, o resultText padrão (X de Y) e um feedback genérico serão usados
+                    else if (!finalFeedback) {
+                       feedbackText = "Continue tentando da próxima vez!";
+                   }
+               }
+           }
+
+           scoreMessage.textContent = resultText;
+           detailedFeedback.textContent = feedbackText;
+           quizResultArea.style.display = 'block';
+       });
+   }
 });

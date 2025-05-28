@@ -9,7 +9,7 @@
 <body>
     <main>
         <button id="theme-toggle-button" aria-label="Ativar modo escuro">🌙</button>
-        <h1>Feliz Aniversário, Meu Amor!</h1>
+        <h1>Para o amor da minha vida.</h1>
         <div class="video-container" id="video-area">
             <iframe width="100%" height="315" src="https://www.youtube.com/embed/umBMuX9S5U4?si=hKUVHhoBVIgRRYxx" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -19,6 +19,7 @@
             <ul>
                 <li><button data-content-id="conheci">Como eu te conheci</button></li>
                 <li><button data-content-id="amo">10 Coisas que eu amo em você</button></li>
+                <li><button data-content-id="quiz">O nosso Quiz!</button></li>
                 </ul>
         </nav>
 
@@ -46,12 +47,57 @@
                     <li>Eu amo... VOCÊ.</li>
                 </ol>
             </div>
+            <div id="quiz" class="content-section">
+                <h2>O nosso Quiz Especial! ❤️</h2>
+                <p>Responda às perguntas e veja o quanto você me conhece e nos conhece!</p>
+                <form id="camilaQuiz">
+                    <div class="quiz-question">
+                        <p><strong>1. Onde foi nosso primeiro encontro?</strong></p>
+                        <label><input type="radio" name="q1" value="a" required> Vinil</label><br>
+                        <label><input type="radio" name="q1" value="b" required> Pizzaria Americana</label><br>
+                        <label><input type="radio" name="q1" value="c" required> Show do Bell Marques</label><br>
+                        <label><input type="radio" name="q1" value="d" required> Rua São Francisco</label><br>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p><strong>2. Onde foi o nosso primeiro beijo?</strong></p>
+                        <label><input type="radio" name="q2" value="a" required> No cinema, assistindo Five Nights at Freddys</label><br>
+                        <label><input type="radio" name="q2" value="b" required> No Vinil, após comer um sanduba com nachos</label><br>
+                        <label><input type="radio" name="q2" value="c" required> No carro, ao lado da área verde</label><br>
+                        <label><input type="radio" name="q2" value="d" required> Em casa, num momento só nosso</label><br>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p><strong>3. Qual nosso doce favorito? </strong></p>
+                        <label><input type="radio" name="q3" value="a" required> Kit Kat</label><br>
+                        <label><input type="radio" name="q3" value="b" required> Brigadeiro de panela</label><br>
+                        <label><input type="radio" name="q3" value="c" required> Snickers</label><br>
+                        <label><input type="radio" name="q3" value="d" required> Pé de Moleque</label><br>
+                    </div>
+                     <div class="quiz-question">
+                        <p><strong>4. Para onde fomos na nossa primeira viagem juntos?</strong></p>
+                        <label><input type="radio" name="q4" value="a" required> Disney </label><br>
+                        <label><input type="radio" name="q4" value="b" required> Maceió</label><br>
+                        <label><input type="radio" name="q4" value="c" required> Miaí</label><br>
+                        <label><input type="radio" name="q4" value="d" required> Traipu</label><br>
+                    </div>
+
+
+                    <button type="submit" class="quiz-submit-button">Ver Resultado!</button>
+                </form>
+                <div id="quizResult" class="quiz-result-area">
+                    <h3>O seu resultado:</h3>
+                    <p id="scoreMessage"></p>
+                    <p id="detailedFeedback"></p>
+                </div>
+            </div>
         </div>
         <section id="photo-gallery-container">
             <h2>Nossas Memórias ❤️</h2>
             <div class="photo-gallery">
                 <img src="https://i.imgur.com/dZJvE40.jpeg" alt="Nós dois"><br>
-                <img src="https://i.imgur.com/8rUFvrO.jpeg" alt="Ratinhos">
+                <img src="https://i.imgur.com/8rUFvrO.jpeg" alt="Ratinhos"><br>
+                <img src="https://i.imgur.com/Yn6IQR6.jpeg" alt="Nós"><br>
             </div>
         </section>
     </main>
@@ -59,7 +105,6 @@
     <footer>
         <p>Feito com amor para minha cabritinha.<br>❤️</p>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>
