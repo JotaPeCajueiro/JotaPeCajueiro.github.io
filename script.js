@@ -270,7 +270,7 @@ setTimeout(() => {
     popup.classList.add('popup-visivel');
 }, 100);
 
-// 3. O Temporizador de 10 segundos para SUMIR
+// 3. O Temporizador de 6 segundos para SUMIR
 setTimeout(() => {
     // Remove a classe de visibilidade (inicia o fade-out)
     popup.classList.remove('popup-visivel');
@@ -279,7 +279,7 @@ setTimeout(() => {
     setTimeout(() => {
         popup.style.display = 'none';
     }, 800);
-}, 10000); 
+}, 6000); 
 
 // Salva os dados do dia
 salvarDados(dataHoje);
