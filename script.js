@@ -207,4 +207,169 @@ document.addEventListener('DOMContentLoaded', function() {
            quizResultArea.style.display = 'block';
        });
    }
+
+   // Função para salvar o cookie
+    function salvarDados(ultimaData) {
+        let d = new Date();
+        d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+        document.cookie = "ultima_visita=" + ultimaData + ";expires=" + d.toUTCString() + ";path=/";
+    }
+
+    // Função para ler o cookie
+    function lerCookie() {
+        let nome = "ultima_visita=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(nome) == 0) return c.substring(nome.length, c.length);
+        }
+        return "";
+    }
+
+    // Função que faz o pop-up sumir suavemente
+    function fecharComFade() {
+        const popup = document.getElementById("caixa-popup");
+        popup.classList.add('popup-escondido');
+        
+        // Remove do HTML de vez após a animação de 0.5s acabar
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 500);
+    }
+
+    // Inicialização ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+    const msgElemento = document.getElementById("mensagem-visita");
+    const popup = document.getElementById("caixa-popup");
+
+    let hoje = new Date();
+    let hora = hoje.getHours();
+    let saudacao = "";
+
+    // Lógica da Saudação
+    if (hora >= 5 && hora < 12) saudacao = "Bom dia, amor! ☀️";
+    else if (hora >= 12 && hora < 18) saudacao = "Boa tarde, vida! ☕";
+    else if (hora >= 18 && hora < 24) saudacao = "Boa noite, linda! ✨";
+    else saudacao = "Ainda acordada, princesa? 🌙";
+
+    let dataHoje = hoje.toLocaleDateString('pt-BR');
+    let dataAnterior = lerCookie();
+
+    // Monta o texto centralizado
+    if (dataAnterior !== "") {
+        msgElemento.innerHTML = `<strong style="color: var(--accent-color); display: block; margin-bottom: 10px; font-size: 1.2rem;">${saudacao}</strong>Sua última visita foi dia <b>${dataAnterior}</b>.`;
+    } else {
+        msgElemento.innerHTML = `<strong style="color: var(--accent-color); display: block; margin-bottom: 10px; font-size: 1.2rem;">${saudacao}</strong>Bem-vinda ao nosso cantinho! ❤️`;
+    }
+
+    // 1. Prepara o conteúdo e mostra o container (ainda transparente)
+popup.style.display = "flex";
+
+// 2. Pequeno delay para a animação de entrada (fade-in) funcionar
+setTimeout(() => {
+    popup.classList.add('popup-visivel');
+}, 100);
+
+// 3. O Temporizador de 10 segundos para SUMIR
+setTimeout(() => {
+    // Remove a classe de visibilidade (inicia o fade-out)
+    popup.classList.remove('popup-visivel');
+    
+    // 4. Depois que a animação de saída acabar (0.8s), remove do display
+    setTimeout(() => {
+        popup.style.display = 'none';
+    }, 800);
+}, 10000); 
+
+// Salva os dados do dia
+salvarDados(dataHoje);
+});
+    const dataInicio = new Date(2024, 0, 14, 16, 0, 0); // Exemplo: 14 de Janeiro de 2024 às 16h
+
+    function atualizarContador() {
+        const agora = new Date();
+        
+        let anos = agora.getFullYear() - dataInicio.getFullYear();
+        let meses = agora.getMonth() - dataInicio.getMonth();
+        let dias = agora.getDate() - dataInicio.getDate();
+
+        // Ajuste para quando o dia/mês atual é menor que o de início
+        if (dias < 0) {
+            meses--;
+            let ultimoDiaMesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+            dias += ultimoDiaMesAnterior;
+        }
+        if (meses < 0) {
+            anos--;
+            meses += 12;
+        }
+
+        // Cálculo de Horas, Minutos e Segundos
+        const diffMs = agora - new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), dataInicio.getHours(), dataInicio.getMinutes(), dataInicio.getSeconds());
+        
+        // Se o horário de hoje ainda não passou o horário de início, ajustamos os dias
+        let totalSegundos = Math.floor((agora - dataInicio) / 1000);
+        let horas = Math.floor((totalSegundos / 3600) % 24);
+        let minutos = Math.floor((totalSegundos / 60) % 60);
+        let segundos = Math.floor(totalSegundos % 60);
+
+        // Montando o texto com plural/singular inteligente
+        let textoAnos = anos > 0 ? `<span>${anos}</span> ${anos === 1 ? 'ano' : 'anos'} ` : "";
+        let textoMeses = meses > 0 ? `<span>${meses}</span> ${meses === 1 ? 'mês' : 'meses'} ` : "";
+        let textoDias = dias > 0 ? `<span>${dias}</span> ${dias === 1 ? 'dia' : 'dias'} ` : "";
+        
+        document.getElementById("timer").innerHTML = 
+            textoAnos + textoMeses + textoDias + "<br>" +
+            `<span>${horas}</span>h <span>${minutos}</span>m <span>${segundos}</span>s`;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+  function criarUmCoracao() {
+        const container = document.getElementById('hearts-container');
+        if (!container) return;
+
+        const coracao = document.createElement('div');
+        coracao.className = 'heart-snowflake';
+        coracao.innerHTML = '❤️'; 
+
+        const posX = Math.random() * 95; // 95 para não criar barra de rolagem lateral
+        const duracao = 4 + Math.random() * 6;
+        const tamanho = 20 + Math.random() * 20;
+
+        coracao.style.left = posX + 'vw';
+        coracao.style.fontSize = tamanho + 'px';
+        coracao.style.animationDuration = duracao + 's';
+        
+        container.appendChild(coracao);
+
+        setTimeout(() => { coracao.remove(); }, duracao * 1000);
+    }
+
+    let intervaloNeve = null;
+
+    // Função que o botão vai chamar
+    function toggleTeste() {
+        const btn = document.getElementById('teste-coracoes');
+        
+        if (!intervaloNeve) {
+            console.log("Iniciando neve...");
+            intervaloNeve = setInterval(criarUmCoracao, 300);
+        } else {
+            console.log("Parando neve...");
+            clearInterval(intervaloNeve);
+            intervaloNeve = null;
+            document.getElementById('hearts-container').innerHTML = '';
+        }
+    }
+
+    // Vincula o clique assim que a página carregar
+    window.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('teste-coracoes');
+        if (btn) {
+            btn.onclick = toggleTeste;
+        } else {
+            console.error("Botão de teste não encontrado no HTML!");
+        }
+    });
 });

@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="hearts-container"></div>
     <main>
+        <div id="caixa-popup">
+    <div id="mensagem-visita"></div>
+</div>
         <button id="theme-toggle-button" aria-label="Ativar modo escuro">🌙</button>
         <h1>Para o amor da minha vida.</h1>
         <div class="video-container" id="video-area">
@@ -94,6 +98,10 @@
         </div>
         <section id="photo-gallery-container">
             <h2>Nossas Memórias ❤️</h2>
+            <div class="contador-container">
+    <div class="contador-titulo">Estamos criando memórias juntos há:</div>
+    <div id="timer">Carregando tempo...</div>
+</div>
             <div class="photo-gallery">
                 <img src="https://i.imgur.com/lgp6zvd.jpeg" alt="Nós dois"><br>
                 <img src="https://i.imgur.com/rVcPzxh.jpeg" alt="Ratinhos"><br>
@@ -104,7 +112,8 @@
     </main>
 
     <footer>
-        <p>Feito com amor para minha cabritinha.<br>❤️</p>
+        <p>Feito com amor para minha cabritinha.</p>
+        <button id="teste-coracoes">❤️</button>
     </footer>
     <script src="script.js"></script>
 </body>

@@ -454,3 +454,150 @@ nav button:active {
     border-color: var(--quiz-wrong-color) !important; /* Garante que a borda sobreponha o hover */
 }
       /* --- FIM DOS ESTILOS DO QUIZ --- */
+
+#mensagem-visita {
+  color: var(--heading-color); /* USA VARIÁVEL */
+    text-align: center;
+    margin-bottom: 25px;
+    margin-right: 50px; /* Adiciona espaço para não ficar sob o botão de tema */
+}
+
+    #botao-fechar-visita {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        line-height: 20px;
+        color: #999;
+        background: none;
+        border: none;
+        padding: 5px;
+    }
+
+    #botao-fechar-visita:hover {
+        color: #000;
+    }
+
+      .contador-container {
+        text-align: center;
+        background: var(--bg-color); /* Fundo sutil para combinar com o site */
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px auto;
+        max-width: 500px;
+        border: 1px solid rgba(255, 20, 147, 0.3); /* Bordas em rosa suave */
+        font-family: 'Segoe UI', sans-serif;
+        color: white;
+    }
+
+    .contador-titulo {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: var(--heading-color);
+        font-weight: bold;
+    }
+
+    #timer {
+        color: var(--heading-color);
+        font-size: 1.4rem;
+        letter-spacing: 1px;
+    }
+
+    .unidade-tempo {
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+#hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* O segredo: um número absurdamente alto para ficar na frente de tudo */
+    z-index: 999999 !important; 
+    pointer-events: none; 
+    overflow: hidden;
+}
+
+.heart-snowflake {
+    position: absolute;
+    top: -50px;
+    /* Use a variável, mas com um fallback (cor de segurança) caso a variável falhe */
+    color: var(--accent-color, #ff69b4); 
+    user-select: none;
+    z-index: 999999 !important;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+#teste-coracoes {
+  border:none!important;
+  background-color:var(--bg-color)!important;
+}
+
+#teste-coracoes:hover {
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
+#caixa-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--main-bg-color, #fff);
+    color: var(--text-color, #333);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px var(--box-shadow-color);
+    z-index: 10000;
+    border: 1px solid var(--border-color);
+    
+    /* RESET DE LARGURA E FLEXBOX */
+    width: 320px; /* Largura fixa ajuda a centralizar o conteúdo dentro */
+    display: none; 
+    flex-direction: column;
+    align-items: center;    /* Centraliza itens no eixo X */
+    justify-content: center; /* Centraliza itens no eixo Y */
+    
+    /* TRANSIÇÃO */
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Força o texto dentro da div de mensagem */
+#mensagem-visita {
+    width: 100%;
+    text-align: center !important; /* Força o alinhamento do texto */
+    margin: 0 auto;
+}
+
+/* Força o negrito/saudação */
+#mensagem-visita strong {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+#mensagem-visita b {
+    color: var(--heading-color); /* Destaca a data com sua cor de título */
+}
+
+.popup-visivel {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translateY(0);
+}
