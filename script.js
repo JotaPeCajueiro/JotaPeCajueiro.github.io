@@ -372,4 +372,104 @@ salvarDados(dataHoje);
             console.error("Botão de teste não encontrado no HTML!");
         }
     });
+
+    
+
+const CHAVE_CODIFICADA = "QUl6YVN5Q3Exd1ZZMUxSY3RsWWtyNm1TclV5bnlUWU94MGlKa3R3"; 
+
+function pegarChave() {
+    // Isso decodifica a chave apenas na hora de usar
+    return atob(CHAVE_CODIFICADA); 
+}
+
+async function falarComGemini(perguntaUsuario) {
+    const API_KEY = pegarChave();
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    // ... resto do seu código fetch ...
+    // ESTA É A PARTE MAIS IMPORTANTE:
+    const instrucaoSistema = "Você é o assistente virtual do site do casal João e Camila. " +
+        "Seja romântico, educado e use emojis. O João é estudante e a Camila é a namorada dele, ela é estudante de psicologia. " +
+        "Responda como se você conhecesse a história deles. Se perguntarem quem é o melhor namorado, diga que é o João."
+        "vocês começaram a namorar em 14 de janeiro de 2024, se conheceram por uma amiga em comum";
+        "Ambos amam assistir filmes e séries. Já assistiram senhor dos anéis, breaking bad, harry potter"
+
+    const corpoRequisicao = {
+        contents: [{
+            role: "user",
+            parts: [{ text: instrucaoSistema + "\n\n Pergunta da Camila: " + perguntaUsuario }]
+        }]
+    };
+
+    try {
+        const resposta = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(corpoRequisicao)
+        });
+        const dados = await resposta.json();
+        return dados.candidates[0].content.parts[0].text;
+    } catch (erro) {
+        return "Ops! Meu coração falhou uma batida. Tente de novo! ❤️";
+    }
+}
+
+// Lógica para enviar quando clicar no botão
+document.getElementById("btn-enviar").onclick = async () => {
+    const input = document.getElementById("chat-input");
+    const containerMsg = document.getElementById("chat-mensagens");
+    
+    if (input.value.trim() === "") return;
+
+    // 1. Mostra a pergunta dela (Formato Bolha Direita)
+    containerMsg.innerHTML += `
+        <div class="msg-container msg-camila-container">
+            <div class="msg-bubble msg-camila">
+                <span class="msg-autor"><b>Camila</b></span>
+                ${input.value}
+            </div>
+        </div>
+    `;
+    const pergunta = input.value;
+    input.value = "";
+
+    // 2. Chama a IA
+    const respostaIA = await falarComGemini(pergunta);
+
+    // 3. Mostra resposta da IA (Formato Bolha Esquerda)
+    containerMsg.innerHTML += `
+        <div class="msg-container msg-ia-container">
+            <div class="msg-bubble msg-ia">
+                <span class="msg-autor"><b>Assistente ✨</b></span>
+                ${respostaIA}
+            </div>
+        </div>
+`;
+    containerMsg.scrollTop = containerMsg.scrollHeight; // Rola para baixo
+};
+
+function toggleChat() {
+    console.log("Cliquei no botão!"); // Se isso não aparecer no F12, o erro é no HTML
+    const chat = document.getElementById("chat-container");
+    
+    if (chat) {
+        chat.classList.toggle("aberto");
+        console.log("Classe 'aberto' alternada!");
+    } else {
+        console.error("Não encontrei o elemento #chat-container");
+    }
+}
+
+// Garanta que a função esteja disponível globalmente
+window.toggleChat = toggleChat;
+
+// EXTRA: Fechar ao apertar ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+        const chat = document.getElementById("chat-container");
+        if (!chat.classList.contains("chat-hidden")) toggleChat();
+    }
+});
+
+// Garanta que o botão enviar continue funcionando como antes!
+
 });

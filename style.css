@@ -4,6 +4,7 @@
     /* Modo Claro (Padrão) */
     --bg-color: #fdf6f8;
     --main-bg-color: #fff;
+    --Rtext-color:#3e273e;
     --text-color: #333;
     --heading-color: #e91e63;
     --subheading-color: #c2185b;
@@ -38,6 +39,7 @@
     /* Modo Escuro */
     --bg-color: #2c1a2b;         /* Fundo escuro (roxo/cinza) */
     --main-bg-color: #3e273e;    /* Container principal mais escuro */
+    --Rtext-color:#f0e6f0;
     --text-color: #f0e6f0;         /* Texto claro (lilás/branco) */
     --heading-color: #f48fb1;     /* H1 rosa claro */
     --subheading-color: #f8bbd0;  /* H2 rosa mais claro */
@@ -600,4 +602,220 @@ nav button:active {
     display: flex !important;
     opacity: 1 !important;
     transform: translateY(0);
+}
+
+/* --- BOTÃO FLUTUANTE (BOLINHA) --- */
+#chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--main-bg-color); /* Cor de teste rápida */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 99999;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#chat-container {
+    border-radius: 25px; /* Cantos bem arredondados */
+    overflow: hidden;    /* Garante que o header e as mensagens respeitem a curva */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    height: 450px;
+    background: var(--content-area-bg);
+    z-index: 99998;
+    display: flex;
+    flex-direction: column;
+    
+    /* ESTADO INICIAL FECHADO */
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: all 0.3s ease;
+}
+
+/* CLASSE QUE ABRE */
+#chat-container.aberto {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+#chat-icon:hover { transform: scale(1.1); }
+/* Classe que "Acorda" o chat */
+#chat-container.chat-ativo {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto; /* Deixa clicar de novo */
+}
+
+/* BOTÃO FECHAR NO HEADER */
+#btn-fechar-chat {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* --- RESPONSIVIDADE (CELULAR) --- */
+@media (max-width: 480px) {
+    #chat-container {
+        width: 90%;
+        right: 5%;
+        bottom: 90px;
+        height: 60vh;
+    }
+    
+    #chat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
+
+/* (Mantenha aqui os estilos de bolhas e input que fizemos antes) */
+/* --- CABEÇALHO DO CHAT --- */
+#chat-header {
+    background: linear-gradient(135deg, var(--accent-color, #ff6b6b), #b33636); /* Gradiente com sua cor */
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer; /* Se quiser fazer ele minimizar depois */
+}
+
+/* --- ÁREA DE MENSAGENS (Onde a conversa rola) --- */
+#chat-mensagens {
+    flex: 1; /* Ocupa todo o espaço central */
+    padding: 20px;
+    overflow-y: auto; /* Barra de rolagem vertical automática */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre as bolhas */
+    background-color: var(--main-bg-color); /* Fundo sutil */
+}
+
+/* Estilização da barra de rolagem (Scrollbar) */
+#chat-mensagens::-webkit-scrollbar {
+    width: 6px;
+}
+#chat-mensagens::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+/* --- ESTILO GERAL DAS BOLHAS DE MENSAGEM --- */
+.msg-container {
+    display: flex;
+    max-width: 85%; /* Evita que o balão ocupe a largura toda do chat */
+}
+
+.msg-bubble {
+    padding: 12px 18px;
+    border-radius: 20px; 
+    max-width: 100%;
+    font-size: 0.95rem;
+    line-height: 1.4; 
+    position: relative;
+
+    /* --- ADICIONE ESTAS LINHAS ABAIXO --- */
+    word-wrap: break-word;       /* Força a quebra de palavras longas */
+    word-break: break-word;      /* Garante a quebra em navegadores antigos */
+    overflow-wrap: break-word;   /* Padrão moderno para quebra de linha */
+    max-width: 100%;             /* Garante que não ultrapasse o container pai */
+}
+
+/* --- MENSAGEM DA CAMILA (DIREITA) --- */
+.msg-camila-container {
+    align-self: flex-end; 
+    max-width: 85%; /* Evita que a bolha ocupe a largura total do chat */
+}
+
+.msg-camila {
+    background-color: var(--gallery-border-color);
+    border-bottom-right-radius: 5px; /* Canto diferente para dar estilo */
+    border-bottom-right-radius: 4px !important; /* Canto reto só no final */
+}
+
+/* --- MENSAGEM DA IA/GEMINI (ESQUERDA) --- */
+.msg-ia-container {
+    align-self: flex-start; /* Joga para a esquerda */
+}
+
+.msg-ia {
+    color: var(--text-color, #);
+    background-color: var(--border-color, #e0e0e0);
+    border-bottom-left-radius: 4px !important; /* Canto reto só no início */
+}
+
+/* Estilo para o nome "Gemini" ou "Ela" (opcional) */
+.msg-autor {
+    font-size: 0.75rem;
+    color: var(--Rtext-color);
+    margin-bottom: 2px;
+    display: block;
+}
+.msg-camila-container .msg-autor { text-align: right; }
+
+/* --- ÁREA DE ENTRADA (INPUT E BOTÃO) --- */
+#chat-input-area {
+    padding: 10px;
+    background-color: var(--main-bg-color, #fff);
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+#chat-input {
+    flex: 1;
+    border: 1px solid var(--border-color, #ccc);
+    background-color: var(--secondary-bg-color, #f9f9f9);
+    color: black;
+    outline: none; /* Remove a borda azul padrão */
+    transition: border-color 0.3s;
+
+    border-radius: 25px;
+    padding: 12px 18px;
+}
+
+#chat-input:focus {
+    border-color: var(--accent-color, #ff6b6b); /* Borda rosa ao clicar */
+}
+
+#btn-enviar {
+    background-color: var(--accent-color, #ff6b6b);
+    color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%; /* Botão perfeitamente redondo */
+    width: 45px;
+    height: 45px;
+}
+
+#btn-enviar:hover {
+    background-color: #b33636; /* Escurece no hover */
+    transform: scale(1.05); /* Aumenta levemente */
+}
+
+#btn-enviar:active {
+    transform: scale(0.95); /* Efeito de clique */
 }
