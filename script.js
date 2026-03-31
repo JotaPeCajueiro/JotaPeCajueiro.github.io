@@ -379,16 +379,17 @@ salvarDados(dataHoje);
 
 async function falarComGemini(perguntaUsuario) {
     const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
-    // 2. Usando a versão v1beta (mais estável para chaves gratuitas)
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+    
+    // URL atualizada para a versão 2.5 que apareceu no seu JSON
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-const corpoRequisicao = {
-    contents: [{
-        parts: [{
-            text: "Instrução: Você é o assistente do casal João e Camila. Pergunta: " + perguntaUsuario
+    const corpoRequisicao = {
+        contents: [{
+            parts: [{
+                text: "Instrução: Você é o assistente romântico do casal João e Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
+            }]
         }]
-    }]
-};
+    };
 
     try {
         const resposta = await fetch(url, {
@@ -399,19 +400,19 @@ const corpoRequisicao = {
 
         const dados = await resposta.json();
 
-        // Se o Google retornar um erro (ex: chave inválida), ele vem dentro de 'dados.error'
         if (dados.error) {
-            console.error("Erro da API Google:", dados.error.message);
-            return "Erro na chave ou permissão. Verifique o console (F12).";
+            console.error("Erro detalhado:", dados.error);
+            return "Opa, tive um probleminha técnico. Tenta de novo? ❤️";
         }
 
+        // Retorna a resposta da IA
         return dados.candidates[0].content.parts[0].text;
+
     } catch (erro) {
-        console.error("Erro de conexão:", erro);
-        return "Erro de conexão. O site está online?";
+        console.error("Erro na requisição:", erro);
+        return "Parece que o sinal do meu coração está fraco agora... 💔";
     }
 }
-
 // Lógica para enviar quando clicar no botão
 document.getElementById("btn-enviar").onclick = async () => {
     const input = document.getElementById("chat-input");
