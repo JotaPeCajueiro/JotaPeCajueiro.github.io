@@ -473,6 +473,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Garanta que o botão enviar continue funcionando como antes!
+// Garanta que o botão enviar continue funcionando como antes !
 
 });
