@@ -382,7 +382,7 @@ salvarDados(dataHoje);
   
 async function falarComGemini(perguntaUsuario) {
     const API_KEY = pegarChave();
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
     const corpoRequisicao = {
         contents: [{
