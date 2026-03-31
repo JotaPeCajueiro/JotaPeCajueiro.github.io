@@ -375,15 +375,9 @@ salvarDados(dataHoje);
 
     
 
-const CHAVE_CODIFICADA = "QUl6YVN5Q3Exd1ZZMUxSY3RsWWtyNm1TclV5bnlUWU94MGlKa3R3"; 
-
-function pegarChave() {
-    // Isso decodifica a chave apenas na hora de usar
-    return atob(CHAVE_CODIFICADA); 
-}
+const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
 
 async function falarComGemini(perguntaUsuario) {
-    const API_KEY = pegarChave();
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
     // ... resto do seu código fetch ...
     // ESTA É A PARTE MAIS IMPORTANTE:
