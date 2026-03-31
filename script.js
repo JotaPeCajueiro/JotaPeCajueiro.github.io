@@ -378,15 +378,13 @@ salvarDados(dataHoje);
 
 
 async function falarComGemini(perguntaUsuario) {
-    const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
-    
-    // URL atualizada para a versão 2.5 que apareceu no seu JSON
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+    const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; // Sua chave sem espaços
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`;
 
     const corpoRequisicao = {
         contents: [{
             parts: [{
-                text: "Instrução: Você é o assistente romântico do casal João e Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
+                text: "Instrução: Você é o assistente romântico do site do João e da Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
             }]
         }]
     };
@@ -401,16 +399,18 @@ async function falarComGemini(perguntaUsuario) {
         const dados = await resposta.json();
 
         if (dados.error) {
-            console.error("Erro detalhado:", dados.error);
-            return "Opa, tive um probleminha técnico. Tenta de novo? ❤️";
+            if (dados.error.code === 429) {
+                return "Calma, respira! ❤️ Mandei muitas mensagens seguidas. Espera um minutinho?";
+            }
+            console.error("Erro Google:", dados.error);
+            return "Tive um probleminha técnico aqui... Tenta de novo? ✨";
         }
 
-        // Retorna a resposta da IA
         return dados.candidates[0].content.parts[0].text;
 
     } catch (erro) {
-        console.error("Erro na requisição:", erro);
-        return "Parece que o sinal do meu coração está fraco agora... 💔";
+        console.error("Erro de conexão:", erro);
+        return "Ih, perdi a conexão com o coração! Verifique se está online. 💔";
     }
 }
 // Lógica para enviar quando clicar no botão
