@@ -471,7 +471,8 @@ document.getElementById("btn-enviar").onclick = async () => {
     input.value = "";
 
     // 2. Chama a IA
-    const respostaIA = await falarComGemini(pergunta);
+    //const respostaIA = await falarComGemini(pergunta);
+    const respostaIA = await falarComGemma(pergunta);
 
     // 3. Mostra resposta da IA (Formato Bolha Esquerda)
     containerMsg.innerHTML += `
