@@ -373,49 +373,15 @@ salvarDados(dataHoje);
         }
     });
 
-    async function falarComGemma(perguntaUsuario) {
-    const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemma-2-27b:generateContent?key=${API_KEY}`;
+    const CHAVE_CODIFICADA = "QUl6YVN5Q1dpbkRvbFhTVVQ0UmhpTFd1TUI5bkRLSWhKVjd4TlF3"; 
 
-    const corpoRequisicao = {
-        contents: [{
-            parts: [{
-                // No Gemma, misturamos a instrução direto no prompt
-                text: `Instrução: Você é o assistente romântico do site do João e da Camila. 
-                       Responda sempre com carinho, use emojis e seja breve.
-                       Pergunta da Camila: ${perguntaUsuario}`
-            }]
-        }]
-    };
-
-    try {
-        const resposta = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(corpoRequisicao)
-        });
-
-        const dados = await resposta.json();
-
-        if (dados.error) {
-            console.error("Erro Gemma:", dados.error);
-            return "Opa! O Gemma está tímido agora. Tenta de novo? ❤️";
-        }
-
-        // O formato de resposta do Gemma na API do Google é igual ao do Gemini
-        return dados.candidates[0].content.parts[0].text;
-
-    } catch (erro) {
-        console.error("Erro de conexão:", erro);
-        return "Conexão perdida com o assistente... 💔";
-    }
+    function pegarChave() {
+    // Isso decodifica a chave apenas na hora de usar
+    return atob(CHAVE_CODIFICADA); 
 }
-    
-
-
-
-/*async function falarComGemini(perguntaUsuario) {
-    const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; // Sua chave sem espaços
+  
+async function falarComGemini(perguntaUsuario) {
+    const API_KEY = pegarChave();
     const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`;
 
     const corpoRequisicao = {
@@ -450,7 +416,6 @@ salvarDados(dataHoje);
         return "Ih, perdi a conexão com o coração! Verifique se está online. 💔";
     }
 }
-*/
 // Lógica para enviar quando clicar no botão
 document.getElementById("btn-enviar").onclick = async () => {
     const input = document.getElementById("chat-input");
