@@ -375,22 +375,18 @@ salvarDados(dataHoje);
 
     
 
-const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
+
 
 async function falarComGemini(perguntaUsuario) {
+    const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
+    // 2. Usando a versão v1beta (mais estável para chaves gratuitas)
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-    // ... resto do seu código fetch ...
-    // ESTA É A PARTE MAIS IMPORTANTE:
-    const instrucaoSistema = "Você é o assistente virtual do site do casal João e Camila. " +
-        "Seja romântico, educado e use emojis. O João é estudante e a Camila é a namorada dele, ela é estudante de psicologia. " +
-        "Responda como se você conhecesse a história deles. Se perguntarem quem é o melhor namorado, diga que é o João."
-        "vocês começaram a namorar em 14 de janeiro de 2024, se conheceram por uma amiga em comum";
-        "Ambos amam assistir filmes e séries. Já assistiram senhor dos anéis, breaking bad, harry potter"
 
     const corpoRequisicao = {
         contents: [{
-            role: "user",
-            parts: [{ text: instrucaoSistema + "\n\n Pergunta da Camila: " + perguntaUsuario }]
+            parts: [{
+                text: "Você é o assistente romântico do João e da Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
+            }]
         }]
     };
 
@@ -400,10 +396,19 @@ async function falarComGemini(perguntaUsuario) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(corpoRequisicao)
         });
+
         const dados = await resposta.json();
+
+        // Se o Google retornar um erro (ex: chave inválida), ele vem dentro de 'dados.error'
+        if (dados.error) {
+            console.error("Erro da API Google:", dados.error.message);
+            return "Erro na chave ou permissão. Verifique o console (F12).";
+        }
+
         return dados.candidates[0].content.parts[0].text;
     } catch (erro) {
-        return "Ops! Meu coração falhou uma batida. Tente de novo! ❤️";
+        console.error("Erro de conexão:", erro);
+        return "Erro de conexão. O site está online?";
     }
 }
 
