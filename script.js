@@ -380,15 +380,15 @@ salvarDados(dataHoje);
 async function falarComGemini(perguntaUsuario) {
     const API_KEY = "AIzaSyCq1wVY1LRctlYkr6mSrUynyTYOx0iJktw"; 
     // 2. Usando a versão v1beta (mais estável para chaves gratuitas)
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
-    const corpoRequisicao = {
-        contents: [{
-            parts: [{
-                text: "Você é o assistente romântico do João e da Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
-            }]
+const corpoRequisicao = {
+    contents: [{
+        parts: [{
+            text: "Instrução: Você é o assistente do casal João e Camila. Pergunta: " + perguntaUsuario
         }]
-    };
+    }]
+};
 
     try {
         const resposta = await fetch(url, {
