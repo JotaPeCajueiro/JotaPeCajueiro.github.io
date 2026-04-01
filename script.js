@@ -374,80 +374,115 @@ salvarDados(dataHoje);
     });
 
     const CHAVE_CODIFICADA = "QUl6YVN5Q1dpbkRvbFhTVVQ0UmhpTFd1TUI5bkRLSWhKVjd4TlF3"; 
+    let historicoConversa = []; // Aqui ficarão guardadas as mensagens da sessão atual
 
     function pegarChave() {
     // Isso decodifica a chave apenas na hora de usar
     return atob(CHAVE_CODIFICADA); 
 }
+
+let memoriaCarregada = "";
+
+// Carrega assim que a página abre
+window.onload = async () => {
+    const res = await fetch('contexto.txt');
+    memoriaCarregada = await res.text();
+};
+
+// Na hora de falar com a IA, usa a variável 'memoriaCarregada'
   
 async function falarComGemini(perguntaUsuario) {
     const API_KEY = pegarChave();
     const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-    const corpoRequisicao = {
-        contents: [{
-            parts: [{
-                text: "Instrução: Você é o assistente romântico do site do João e da Camila. Responda com carinho e emojis. Pergunta: " + perguntaUsuario
-            }]
-        }]
-    };
-
     try {
-        const resposta = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(corpoRequisicao)
+        /* 1. LER O ARQUIVO TXT
+        // O 'cache: "no-store"' garante que ele pegue a versão mais nova do arquivo sempre
+        const respostaArquivo = await fetch('contexto.txt', { cache: "no-store" });
+        const contextoExtraido = await respostaArquivo.text();*/
+        const mensagemFormatada = historicoConversa.length === 0 
+        ? `CONTEXTO: ${memoriaCarregada}\n\nPERGUNTA: ${perguntaUsuario}`
+        : perguntaUsuario;
+
+        historicoConversa.push({
+            role: "user",
+            parts: [{ text: mensagemFormatada }]
         });
 
-        const dados = await resposta.json();
+        // 3. CHAMAR A API
+        const respostaIA = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ contents: historicoConversa }) // Envia a lista completa
+        });
 
-        if (dados.error) {
-            if (dados.error.code === 429) {
-                return "Calma, respira! ❤️ Mandei muitas mensagens seguidas. Espera um minutinho?";
-            }
-            console.error("Erro Google:", dados.error);
-            return "Tive um probleminha técnico aqui... Tenta de novo? ✨";
-        }
+        const dados = await respostaIA.json();
+        const textoResposta = dados.candidates[0].content.parts[0].text;
 
-        return dados.candidates[0].content.parts[0].text;
+        // 2. Salva a resposta da IA no histórico para a próxima pergunta
+        historicoConversa.push({
+            role: "model",
+            parts: [{ text: textoResposta }]
+        });
+        
+        if (dados.error) throw new Error(dados.error.message);
+        
+        return textoResposta;
 
     } catch (erro) {
-        console.error("Erro de conexão:", erro);
-        return "Ih, perdi a conexão com o coração! Verifique se está online. 💔";
+        // Se der erro, removemos a última pergunta do histórico para não bugar a próxima tentativa
+        historicoConversa.pop();
+        console.error("Erro ao processar:", erro);
+        return "Tive um erro ao ler minhas memórias... Tenta de novo? 💔";
     }
 }
 // Lógica para enviar quando clicar no botão
 document.getElementById("btn-enviar").onclick = async () => {
     const input = document.getElementById("chat-input");
-    const containerMsg = document.getElementById("chat-mensagens");
-    
+    const containerMsg = document.getElementById("chat-mensagens"); // No seu estava 'chat-mensagens' ou 'chat-messages', ajuste conforme o seu ID real
+
     if (input.value.trim() === "") return;
 
-    // 1. Mostra a pergunta dela (Formato Bolha Direita)
+    const pergunta = input.value;
+
+    // 1. Mostra a pergunta dela
     containerMsg.innerHTML += `
         <div class="msg-container msg-camila-container">
             <div class="msg-bubble msg-camila">
                 <span class="msg-autor"><b>Camila</b></span>
-                ${input.value}
+                ${pergunta}
             </div>
-        </div>
-    `;
-    const pergunta = input.value;
+        </div>`;
+    
     input.value = "";
+    containerMsg.scrollTop = containerMsg.scrollHeight;
 
-    // 2. Chama a IA
-    const respostaIA = await falarComGemini(pergunta);
+    // --- NOVIDADE AQUI ---
+    // 2. Ativa o "Digitando..."
+    mostrarDigitando();
 
-    // 3. Mostra resposta da IA (Formato Bolha Esquerda)
-    containerMsg.innerHTML += `
-        <div class="msg-container msg-ia-container">
-            <div class="msg-bubble msg-ia">
-                <span class="msg-autor"><b>Assistente ✨</b></span>
-                ${respostaIA}
-            </div>
-        </div>
-`;
-    containerMsg.scrollTop = containerMsg.scrollHeight; // Rola para baixo
+    try {
+        // 3. Chama a IA (que agora usa o contexto memorizado do .txt)
+        const respostaIA = await falarComGemini(pergunta);
+        await(1000);
+        // 4. Remove o "Digitando..." assim que a resposta chega
+        removerDigitando();
+
+        // 5. Mostra resposta da IA
+        containerMsg.innerHTML += `
+            <div class="msg-container msg-ia-container">
+                <div class="msg-bubble msg-ia">
+                    <span class="msg-autor"><b>Assistente ✨</b></span>
+                    ${respostaIA}
+                </div>
+            </div>`;
+    } catch (erro) {
+        console.log(erro);
+        removerDigitando();
+        containerMsg.innerHTML += `<div class="msg-container"><div class="msg-bubble">Erro na conexão... 💔</div></div>`;
+    }
+
+    containerMsg.scrollTop = containerMsg.scrollHeight;
 };
 
 function toggleChat() {
@@ -476,3 +511,21 @@ document.addEventListener('keydown', (e) => {
 // Garanta que o botão enviar continue funcionando como antes !
 
 });
+
+function mostrarDigitando() {
+    const containerMsg = document.getElementById("chat-mensagens");
+    const div = document.createElement("div");
+    div.id = "digitando-id"; 
+    div.className = "msg-container msg-ia-container"; // Usa a mesma classe da IA para alinhar à esquerda
+    div.innerHTML = `
+        <div class="msg-bubble msg-ia typing-indicator">
+            <span></span><span></span><span></span>
+        </div>`;
+    containerMsg.appendChild(div);
+    containerMsg.scrollTop = containerMsg.scrollHeight;
+}
+
+function removerDigitando() {
+    const indicador = document.getElementById("digitando-id");
+    if (indicador) indicador.remove();
+}
